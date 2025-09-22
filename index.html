@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMPML Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: url("pmpml.jpg") no-repeat center center/cover;
+    }
+
+    .wrapper {
+      background-color: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      z-index: 10;
+      transition: transform 0.3s ease;
+    }
+
+    .wrapper:hover {
+      transform: scale(1.02);
+    }
+
+    .wrapper h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
+
+    .input-container {
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .input-container input[type="text"],
+    .input-container input[type="password"] {
+      width: 100%;
+      padding: 12px 40px 12px 40px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #333;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .input-container input[type="text"]:focus,
+    .input-container input[type="password"]:focus {
+      border-color: #007bff;
+    }
+
+    .input-container i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 18px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 15px;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    .forgot-password {
+      display: block;
+      text-align: left;
+      margin-top: 10px;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .forgot-password a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .forgot-password a:hover {
+      text-decoration: underline;
+    }
+
+    .login-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    }
+
+    .login-btn:hover {
+      background-color: #0056b3;
+      transform: scale(0.98);
+    }
+
+    .register-link {
+      font-size: 14px;
+      color: #555;
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .register-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Error message styling */
+    .error-message {
+      color: #ff3333;
+      font-size: 14px;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
+    }
+
+    /* Bus Animation (for next page) */
+    .bus-road-container {
+      position: relative;
+      width: 80%;
+      max-width: 700px;
+      margin-bottom: 50px;
+    }
+
+    .bus-container {
+      position: absolute;
+      top: 18%;
+      left: -150px;
+      width: 180px;
+      height: 80px;
+      animation: moveBus 5s linear infinite;
+      z-index: 10;
+    }
+
+    .bus {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #FF6347;
+      border-radius: 15px;
+    }
+
+    .bus .windows {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 150px;
+      height: 30px;
+      background: #ADD8E6;
+      border-radius: 5px;
+    }
+
+    .bus .wheels {
+      position: absolute;
+      bottom: -15px;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .bus .wheel {
+      width: 25px;
+      height: 25px;
+      background: #000;
+      border-radius: 50%;
+      animation: rotateWheel 1s linear infinite;
+    }
+
+    @keyframes moveBus {
+      0% {
+        left: -150px;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+
+    @keyframes rotateWheel {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Next page styling */
+    .next-page {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: linear-gradient(to bottom, #a1c4fd, #c2e9fb);
+      z-index: 20;
+    }
+
+    .next-page h1 {
+      font-size: 40px;
+      color: white;
+      font-weight: 600;
+      text-decoration: underline;
+      margin-bottom: 30px;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 600px;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .form-container:hover {
+      transform: scale(1.05);
+    }
+
+    .form-container p {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #333;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .form-container select,
+    .form-container input[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 8px;
+      margin: 15px 0;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      transition: 0.3s ease;
+    }
+
+    .form-container select:focus,
+    .form-container input[type="submit"]:hover {
+      border-color: #007bff;
+      background-color: #f0f8ff;
+    }
+
+    .form-container input[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+      border: none;
+    }
+
+    .form-container input[type="submit"]:hover {
+      background-color: #0056b3;
+      transform: scale(0.98);
+    }
+
+    /* Logout button */
+    .logout-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #ff3333;
+      color: white;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: #cc0000;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .wrapper {
+        padding: 20px;
+        margin: 10px;
+      }
+
+      .next-page h1 {
+        font-size: 30px;
+      }
+
+      .form-container {
+        padding: 20px;
+        margin: 10px;
+      }
+
+      .bus-container {
+        top: 15%;
+        width: 120px;
+        height: 60px;
+      }
+
+      .bus .windows {
+        width: 100px;
+        height: 25px;
+      }
+
+      .bus .wheel {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Page -->
+  <div class="wrapper" id="loginPage">
+    <h1>Welcome to PMPML</h1>
+    <form id="loginForm">
+      <div class="input-container">
+        <i class='bx bxs-user'></i>
+        <input type="text" name="username" id="username" placeholder="Username" required autofocus>
+      </div>
+      <div class="input-container">
+        <i class='bx bxs-lock'></i>
+        <input type="password" name="password" id="password" placeholder="Password" required>
+      </div>
+
+      <div class="checkbox-label">
+        <input type="checkbox" id="rememberMe">
+        <label for="rememberMe">Remember me</label>
+      </div>
+
+      <div class="forgot-password">
+        <a href="#">Forgot Password?</a>
+      </div>
+
+      <div>
+        <button type="submit" class="login-btn">Login</button>
+      </div>
+    </form>
+
+    <p class="register-link">Don't have an account? <a href="#">Register</a></p>
+    
+    <div class="error-message" id="errorMessage">
+      Invalid username or password. Please try again.
+    </div>
+  </div>
+
+  <!-- Next Page (Hidden initially) -->
+  <div class="next-page" id="nextPage">
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+    
+    <div class="bus-road-container">
+      <div class="bus-container">
+        <div class="bus">
+          <div class="windows"></div>
+          <div class="wheels">
+            <div class="wheel"></div>
+            <div class="wheel"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h1><i>Welcome to PMPML!</i></h1>
+
+    <div class="form-container">
+      <p>Welcome to <i>PMPML!</i> Choose your starting point and destination below, and we'll help you find the best route!</p>
+
+      <select id="startPoint">
+        <option>Starting Point</option>
+        <option>Ambegaon</option>
+        <option>Katraj</option>
+        <option>RMD College</option>
+        <option>Sinhgad College</option>
+        <option>Swargate</option>
+        <option>Warje</option>
+      </select>
+
+      <select id="destination">
+        <option>Destination</option>
+        <option>Ambegaon</option>
+        <option>Katraj</option>
+        <option>RMD College</option>
+        <option>Sinhgad College</option>
+        <option>Swargate</option>
+        <option>Warje</option>
+      </select>
+
+      <input type="submit" value="Find Suitable Way" id="findRoute">
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Simple validation
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const errorMessage = document.getElementById('errorMessage');
+      
+      // For demo purposes, accept any non-empty credentials
+      if (username && password) {
+        // Hide login page and show next page
+        document.getElementById('loginPage').style.display = 'none';
+        document.getElementById('nextPage').style.display = 'flex';
+        errorMessage.style.display = 'none';
+      } else {
+        errorMessage.style.display = 'block';
+      }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      // Show login page and hide next page
+      document.getElementById('loginPage').style.display = 'block';
+      document.getElementById('nextPage').style.display = 'none';
+      
+      // Clear form fields
+      document.getElementById('username').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('rememberMe').checked = false;
+    });
+
+    document.getElementById('findRoute').addEventListener('click', function() {
+      const startPoint = document.getElementById('startPoint').value;
+      const destination = document.getElementById('destination').value;
+      
+      if (startPoint === 'Starting Point' || destination === 'Destination') {
+        alert('Please select both starting point and destination');
+        return;
+      }
+      
+      if (startPoint === destination) {
+        alert('Starting point and destination cannot be the same');
+        return;
+      }
+      
+      // In a real application, this would redirect to a results page
+      alert(`Finding route from ${startPoint} to ${destination}`);
+    });
+  </script>
+</body>
+</html>
